@@ -16,5 +16,10 @@ public class playerController {
         listOfPlayers.add(incomingPlayer);
         return  incomingPlayer;
     }
+    @GetMapping
+    public List<player> getAllPlayers(){
+        return listOfPlayers;
+    }
+
 
 }
