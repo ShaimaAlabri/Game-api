@@ -30,7 +30,21 @@ public class playerController {
         return existingPlayer;
 
     }
-    
+    @PutMapping(path="/{id}")
+    public  player updateSpecificPlayer(@PathVariable String id, @RequestBody player incomingPlayer) {
+        player existingPlayer = getSpecificPlayer(id);
+        existingPlayer.name = incomingPlayer.name;
+        return existingPlayer;
+    }
+    @DeleteMapping(path="/{id}")
+    public player removePlayer(@PathVariable String id){
+        player existingPlayer = getSpecificPlayer(id);
+        listOfPlayers.remove(existingPlayer);
+        return existingPlayer;
+    }
+
+
+
 
 
 }
