@@ -9,4 +9,8 @@ public class playerController {
     public String getHomePageMessage(){
         return "MY HOME PAGE";
     }
+    public String yetAnotherMessage(){
+        return "Some other message";
+    }
+    
 }
