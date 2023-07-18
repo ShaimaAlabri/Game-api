@@ -20,6 +20,17 @@ public class playerController {
     public List<player> getAllPlayers(){
         return listOfPlayers;
     }
+    @GetMapping(path="/{id}")
+    public player getSpecificPlayer( @PathVariable String id){
+        player existingPlayer= listOfPlayers.stream().filter(
+                (currPlayer)->{
+         return currPlayer.id.equals(id);
+     }).findFirst().get();
+
+        return existingPlayer;
+
+    }
+    
 
 
 }
