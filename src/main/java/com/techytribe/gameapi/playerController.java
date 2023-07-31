@@ -1,46 +1,49 @@
 package com.techytribe.gameapi;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 @RestController
 @RequestMapping(path="/api/v1/player")
 @CrossOrigin("*")
 public class playerController {
-   CopyOnWriteArrayList<player> listOfPlayers = new CopyOnWriteArrayList<>();
 
+   @Autowired
+  public PlayerRepository playerRepository;
 
     @PostMapping
     public player createPlayer(@RequestBody player incomingPlayer){
-        listOfPlayers.add(incomingPlayer);
+        playerRepository.save(incomingPlayer);
+
         return  incomingPlayer;
     }
     @GetMapping
     public List<player> getAllPlayers(){
-        return listOfPlayers;
+        return playerRepository.findAll();
     }
     @GetMapping(path="/{id}")
-    public player getSpecificPlayer( @PathVariable String id){
-        player existingPlayer= listOfPlayers.stream().filter(
-                (currPlayer)->{
-         return currPlayer.id.equals(id);
-     }).findFirst().get();
+    public Optional<player> getSpecificPlayer(@PathVariable String id){
 
-        return existingPlayer;
+
+        return  playerRepository.findById(id);
 
     }
     @PutMapping(path="/{id}")
     public  player updateSpecificPlayer(@PathVariable String id, @RequestBody player incomingPlayer) {
-        player existingPlayer = getSpecificPlayer(id);
+        player existingPlayer = getSpecificPlayer(id).get();
         existingPlayer.name = incomingPlayer.name;
+        playerRepository.save(existingPlayer);
         return existingPlayer;
     }
     @DeleteMapping(path="/{id}")
     public player removePlayer(@PathVariable String id){
-        player existingPlayer = getSpecificPlayer(id);
-        listOfPlayers.remove(existingPlayer);
+        player existingPlayer = getSpecificPlayer(id).get();
+        playerRepository.delete(existingPlayer);
+
         return existingPlayer;
     }
 
